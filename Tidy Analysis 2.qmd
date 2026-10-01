@@ -37,13 +37,15 @@ tourism <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/ti
 ```
 
 ```{r}
-#Change the year variable to integers
+#Change the year variable to characters (to show full integers, not decimals)
 
 tourism <- tourism|>
   mutate(year = as.character(year))
 ```
 
 ```{r}
+#Bar plot of number of visits per visit type annually
+
 ggplot(tourism, aes(x = year,y = trips, color = purpose)) +
 geom_col() +
 labs(
