@@ -2,15 +2,36 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "jaeimpaik.github.io",
+    "title": "Jaeim Paik",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Hello! My name is Jaeim (Jamie) Paik, a Pomona Junior and cognitive science major with a data science minor. My primary interest is in human-centered design, specifically in the field of designing for a more sustainable and joyful future."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this site"
+    "text": "This site …"
+  },
+  {
+    "objectID": "dataviz.html",
+    "href": "dataviz.html",
+    "title": "Data Visualizations",
+    "section": "",
+    "text": "Tidy tuesday visualizations here"
+  },
+  {
+    "objectID": "Tidy Analysis.html",
+    "href": "Tidy Analysis.html",
+    "title": "Tidy Tuesday Analysis",
+    "section": "",
+    "text": "This TidyTuesday dataset is about the 2026 Winter Olympics in Milan-Cortina, Italy. The dataset contains detailed information about all 1,866 Olympic events, including both competition and training sessions across various winter sport disciplines.\n\n\nCode\nolympics_ski &lt;- olympics |&gt;\n    filter(str_detect(discipline_name,\"Skiing\"))\n\n#filtering dataset for sports that are related to skiing only\n\n\n\n\nCode\nolympics_ski &lt;- olympics_ski |&gt;\n  mutate(medal = if_else(is_medal_event == TRUE, \"Medal\", \"Non-medal\"))\n\n\n\n\nCode\n# segmented bar chart\nggplot(olympics_ski, aes(x = discipline_name, fill = medal)) +\n  geom_bar(position = \"fill\") +\n  labs(\n    x = \"Type of Ski Sport\",\n    y = \"Proportion of Medal Events\",\n    title = \"Proportion of Medal Events for Olympic Ski Sports\"\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\n# Create new variable for game duration in minutes\n\nolympics &lt;- olympics |&gt;\n  mutate(duration = as.numeric(end_time - start_time) / 60)\n\n\n\n\nCode\n# scatter plot\nggplot(olympics, aes(x = discipline_name, y = duration)) +\n  geom_point() +\n  labs(\n    x = \"Olympic Sport\",\n    y = \"Duration of Game (mins)\",\n    title = \"Duration of each game for each olympic sport\") +\n    theme(axis.text.x = element_text(angle = 45, hjust = 1))"
+  },
+  {
+    "objectID": "Tidy Analysis 2.html",
+    "href": "Tidy Analysis 2.html",
+    "title": "Tidy Tuesday Analysis 2",
+    "section": "",
+    "text": "This TidyTuesday dataset is about ecotourism, specifically involving ecological observation and weather condition alongside tourism data. wtv show on the link Thank you to Nicola Rennie for curating the dataset.\n\n\nCode\n#Change the year variable to integers\n\ntourism &lt;- tourism|&gt;\n  mutate(year = as.character(year))\n\n\n\n\nCode\nggplot(tourism, aes(x = year,y = trips, color = purpose)) +\ngeom_col() +\nlabs(\nx = \"Year\",\ny = \"Number of overnight trips (thousands)\",\nfill = \"Purpose\",\ntitle = \"Tourist visits to Australia\",\n)"
   }
 ]

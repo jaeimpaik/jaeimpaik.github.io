@@ -1,7 +1,20 @@
 ---
-title: "jaeimpaik.github.io"
+title: "Jaeim Paik"
+image: Profile Pic Small.png
+toc: false
+about: 
+  template: jolla
+  image-shape: rounded
+  image-width: 18em
+  links:
+    - text: LinkedIn
+      href: www.linkedin.com/in/jaeim-paik-9233b8162
+      target: _blank
+    - text: GitHub
+      href: https://github.com/jaeimpaik/jaeimpaik.github.io
+      target: _blank 
+    - text: Email
+      href: mailto:jpls2024@mymail.pomona.edu
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Hello! My name is Jaeim (Jamie) Paik, a Pomona Junior and cognitive science major with a data science minor. My primary interest is in human-centered design, specifically in the field of designing for a more sustainable and joyful future.

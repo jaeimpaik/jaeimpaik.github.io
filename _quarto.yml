@@ -3,20 +3,25 @@ project:
   output-dir: docs
 
 website:
-  title: "jaeimpaik.github.io"
+  title: "Jaeim Paik"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - text: Data Viz
+        menu:
+         - text: Olympics 2026
+           href: Tidy Analysis.qmd
+         - text: Ecotourism
+           href: Tidy Analysis 2.qmd
 
 format:
   html:
     theme:
       - cosmo
-      - brand
+      - litera
     css: styles.css
     toc: true
-
-
-
+    page-layout: full

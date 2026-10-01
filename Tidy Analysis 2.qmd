@@ -1,0 +1,55 @@
+---
+title: "Tidy Tuesday Analysis 2"
+description: |
+  Analysis of eco tourism data from TidyTuesday
+author: Jamie Paik
+date: September 28, 2026
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    source: true
+    code-overflow: wrap
+execute: 
+  warning: false
+  message: false
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(openintro)
+```
+
+
+This TidyTuesday dataset is about ecotourism, specifically involving ecological observation and weather condition alongside tourism data.
+
+Credits for data source:
+[Github Link](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-28/readme.md)
+
+Nicola Rennie curated the dataset
+
+
+```{r}
+#| echo: false
+tourism <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-07-28/tourism.csv')
+
+```
+
+```{r}
+#Change the year variable to integers
+
+tourism <- tourism|>
+  mutate(year = as.character(year))
+```
+
+```{r}
+ggplot(tourism, aes(x = year,y = trips, color = purpose)) +
+geom_col() +
+labs(
+x = "Year",
+y = "Number of overnight trips (thousands)",
+fill = "Purpose",
+title = "Tourist visits to Australia",
+)
+```

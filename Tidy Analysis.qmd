@@ -1,0 +1,75 @@
+---
+title: "Tidy Tuesday Analysis"
+description: |
+  Analysis of 2026 Olympics data from TidyTuesday
+author: Jamie Paik
+date: September 28, 2026
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+    source: true
+    code-overflow: wrap
+
+execute: 
+  warning: false
+  message: false
+---
+```{r}
+#| echo: false
+library(tidyverse)
+library(openintro)
+```
+
+This TidyTuesday dataset is about the 2026 Winter Olympics in Milan-Cortina, Italy. The dataset contains detailed information about all 1,866 Olympic events, including both competition and training sessions across various winter sport disciplines.
+
+```{r}
+#| echo: false
+dataset_url = "https://raw.githubusercontent.com/chendaniely/olympics-2026/refs/heads/main/data/final/olympics/olympics_events.csv"
+olympics <- read_csv(dataset_url) #reading csv data into Positron
+```
+
+```{r}
+olympics_ski <- olympics |>
+    filter(str_detect(discipline_name,"Skiing"))
+
+#filtering dataset for sports that are related to skiing only
+```
+
+```{r}
+olympics_ski <- olympics_ski |>
+  mutate(medal = if_else(is_medal_event == TRUE, "Medal", "Non-medal"))
+```
+
+```{r}
+# segmented bar chart
+ggplot(olympics_ski, aes(x = discipline_name, fill = medal)) +
+  geom_bar(position = "fill") +
+  labs(
+    x = "Type of Ski Sport",
+    y = "Proportion of Medal Events",
+    title = "Proportion of Medal Events for Olympic Ski Sports"
+)
+```
+
+
+```{r}
+# Create new variable for game duration in minutes
+
+olympics <- olympics |>
+  mutate(duration = as.numeric(end_time - start_time) / 60)
+
+```
+
+```{r}
+
+# scatter plot
+ggplot(olympics, aes(x = discipline_name, y = duration)) +
+  geom_point() +
+  labs(
+    x = "Olympic Sport",
+    y = "Duration of Game (mins)",
+    title = "Duration of each game for each olympic sport") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
