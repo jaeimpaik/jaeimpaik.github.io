@@ -33,5 +33,19 @@
     "title": "Tidy Tuesday Analysis 2",
     "section": "",
     "text": "This TidyTuesday dataset is about ecotourism, specifically involving ecological observation and weather condition alongside tourism data. wtv show on the link Thank you to Nicola Rennie for curating the dataset.\n\n\nCode\n#Change the year variable to integers\n\ntourism &lt;- tourism|&gt;\n  mutate(year = as.character(year))\n\n\n\n\nCode\nggplot(tourism, aes(x = year,y = trips, color = purpose)) +\ngeom_col() +\nlabs(\nx = \"Year\",\ny = \"Number of overnight trips (thousands)\",\nfill = \"Purpose\",\ntitle = \"Tourist visits to Australia\",\n)"
+  },
+  {
+    "objectID": "data_viz/Tidy Analysis 2.html",
+    "href": "data_viz/Tidy Analysis 2.html",
+    "title": "Tidy Tuesday Analysis 2",
+    "section": "",
+    "text": "This TidyTuesday dataset is about ecotourism, specifically involving ecological observation and weather condition alongside tourism data.\nCredits for data source: Github Link\nNicola Rennie curated the dataset\n\n\nCode\n#Change the year variable to characters (to show full integers, not decimals)\n\ntourism &lt;- tourism|&gt;\n  mutate(year = as.character(year))\n\n\n\n\nCode\n#Bar plot of number of visits per visit type annually\n\nggplot(tourism, aes(x = year,y = trips, color = purpose)) +\ngeom_col() +\nlabs(\nx = \"Year\",\ny = \"Number of overnight trips (thousands)\",\nfill = \"Purpose\",\ntitle = \"Tourist visits to Australia\",\n)"
+  },
+  {
+    "objectID": "data_viz/Tidy Analysis.html",
+    "href": "data_viz/Tidy Analysis.html",
+    "title": "Tidy Tuesday Analysis",
+    "section": "",
+    "text": "This TidyTuesday dataset is about the 2026 Winter Olympics in Milan-Cortina, Italy. The dataset contains detailed information about all 1,866 Olympic events, including both competition and training sessions across various winter sport disciplines.\nCredits for data source: Github Link\n@chendaniely, Daniel Chen, curated the dataset\nThe data frame combines data from three sources: Olympics.com - Official detailed daily schedule (events, times, venues) Wikipedia - Competition schedule overview table Kaggle - Venue information dataset\n\n\nCode\nolympics_ski &lt;- olympics |&gt;\n    filter(str_detect(discipline_name,\"Skiing\"))\n\n#filtering dataset for sports that are related to skiing only\n\n\n\n\nCode\nolympics_ski &lt;- olympics_ski |&gt;\n  mutate(medal = if_else(is_medal_event == TRUE, \"Medal\", \"Non-medal\"))\n\n#mutating the is_medal_event variable to show actual description of medal game status\n\n\n\n\nCode\n# segmented bar chart\nggplot(olympics_ski, aes(x = discipline_name, fill = medal)) +\n  geom_bar(position = \"fill\") +\n  labs(\n    x = \"Type of Ski Sport\",\n    y = \"Proportion of Medal Events\",\n    title = \"Proportion of Medal Events for Olympic Ski Sports\"\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\n# Create new variable for game duration in minutes\n\nolympics &lt;- olympics |&gt;\n  mutate(duration = as.numeric(end_time - start_time) / 60)\n\n\n\n\nCode\n# scatter plot\nggplot(olympics, aes(x = discipline_name, y = duration)) +\n  geom_point() +\n  labs(\n    x = \"Olympic Sport\",\n    y = \"Duration of Game (mins)\",\n    title = \"Duration of each game for each olympic sport\") +\n    theme(axis.text.x = element_text(angle = 45, hjust = 1))"
   }
 ]
