@@ -17,4 +17,4 @@ about:
       href: mailto:jpls2024@mymail.pomona.edu
 ---
 
-Hello! My name is Jaeim (Jamie) Paik, a Pomona Junior and cognitive science major with a data science minor. My primary interest is in human-centered design, specifically in the field of designing for a more sustainable and joyful future.
+Hello! My name is Jaeim (Jamie) Paik, a Pomona Junior and cognitive science major with a data science minor. My primary interest is in human-centered design using both qualitative and quantitative methods to define a user and design for a more sustainable and joyful future.

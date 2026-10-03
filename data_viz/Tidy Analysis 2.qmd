@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday Analysis 2"
+title: "Eco Tourism"
 description: |
   Analysis of eco tourism data from TidyTuesday
 author: Jamie Paik
@@ -51,7 +51,12 @@ geom_col() +
 labs(
 x = "Year",
 y = "Number of overnight trips (thousands)",
-fill = "Purpose",
+color = "Purpose",
 title = "Tourist visits to Australia",
 )
 ```
+
+The bar plot illustrates the number of overnight visits people made to Australia each year, categorized by the type of trip being either a business or holiday. 
+The significant drop in total number of overnight trips in 2020 and 2021 is most probably due to COVID 19 travel regulations, and it is seen that as countries recovered from the pandemic, boarders opened up and travel increased significantly in 2022.
+
+Overall, the majority of visits to Australia seem to be for holiday, although there was also a growing number of business trips between 2014-2019. Australia also has a working holiday visa which allows foreigners to work for up to a year, which might be adding to the business category (although it is unclear if a "working holiday" visa is classified as business or holiday).

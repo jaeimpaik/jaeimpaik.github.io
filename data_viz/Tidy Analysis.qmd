@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday Analysis"
+title: "Olympics 2026"
 description: |
   Analysis of 2026 Olympics data from TidyTuesday
 author: Jamie Paik
@@ -23,15 +23,15 @@ library(openintro)
 
 This TidyTuesday dataset is about the 2026 Winter Olympics in Milan-Cortina, Italy. The dataset contains detailed information about all 1,866 Olympic events, including both competition and training sessions across various winter sport disciplines.
 
-Credits for data source:
-[Github Link](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-02-10/readme.md)
-
-@chendaniely, Daniel Chen, curated the dataset
-
 The data frame combines data from three sources:
 Olympics.com - Official detailed daily schedule (events, times, venues)
 Wikipedia - Competition schedule overview table
 Kaggle - Venue information dataset
+
+Credits for data source:
+[Github Link](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-02-10/readme.md)
+
+@chendaniely, Daniel Chen, curated the dataset
 
 
 ```{r}
@@ -65,6 +65,7 @@ ggplot(olympics_ski, aes(x = discipline_name, fill = medal)) +
 )
 ```
 
+This bar chart illustrates the proportion of ski-related Olympic sports that were medal vs non-medal in the 2026 Winter Olympics. Both Alpine Skiing and Cross-Country Skiing are judged strictly by clock time, while Freestyle Skiing involves a mix of timed racing and subjective judge scoring. It is clear that Cross-Country Skiing has proportionately the most medal games, while Freestyle Skiing has the smallest proportion, which might be influenced by the fact that there is a degree of subjective judgement required, hence a team of qualified judges are needed for a medal game.
 
 ```{r}
 # Create new variable for game duration in minutes
@@ -86,3 +87,5 @@ ggplot(olympics, aes(x = discipline_name, y = duration)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+
+The scatterplot illustrates the duration of each game (in minutes) for each 2026 Winter Olympic sport. Figure skating seems to have games with the longest game time at maximum 250 minutes (around 3 hours) and sports that are strictly judged by speed and time, such as Cross-Country Skiing, Speed Skating, or Short Track Speed Skating have the shortest games.
