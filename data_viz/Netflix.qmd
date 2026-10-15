@@ -1,0 +1,166 @@
+---
+title: "Netflix String Analysis"
+subtitle: "DS002 Project 2"
+author: "Jamie Paik"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    source: true
+    code-overflow: wrap
+execute: 
+  warning: false
+  message: false
+---
+
+at least 3 str_*() functions (3 different str_*() functions) done
+at least 1 fct_*() function done
+- change rating from str to fct
+at least 3 regular expressions done
+at least 1 lookaround done
+at least 2 illustrative, well-labeled plots or tables
+a description of what insights can be gained from your plots and tables
+a reference / documentation of the data source (same idea as in Project 1).
+
+
+```{r}
+library(tidyverse)
+library(openintro)
+```
+
+Read Netflix data into Positron.
+
+This Netflix data is from the Tidy Tuesday on 2021-04-20, obtained from Kaggle with credit to Shivam Bansal. The dataset was collected from Flixable, a third-party Netflix search engine. Data includes TV shows and movies added onto Netflix from 2019 onwards (although actual movie release year dates back to 1925), inclduing information such as show title, director, cast, country, release year, and rating.
+
+Credits for data source:
+[Github Link](https://github.com/rfordatascience/tidytuesday/blob/main/data/2021/2021-04-20/readme.md)
+
+
+```{r}
+# Read in data from Tidy Tuesday
+netflix_titles <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-04-20/netflix_titles.csv')
+
+#Check first few rows
+head(netflix_titles)
+
+```
+
+Given the information available on the Netflix data set, here are some questions of interest that we can explore:
+
+* What are the most common movie and TV show genres represented in Netflix?
+* Out of the movies on Netflix, which is the most common rating (maturity) and is there a pattern among certain genres?
+* How has the distribution of movie running times (mins) changed over the years, from 1925 to 2021?
+
+Code to clean the data
+```{r}
+# Clean data to create new string variable that shows movie/ tv show genre 
+
+table(netflix_titles$rating)
+
+netflix_titles <- netflix_titles |>
+  mutate(rating = fct_relevel(rating, c("NR", "UR", "TV-Y", "TV-Y7", "TV-Y7-FV", "G", "TV-G", "PG", "TV-PG", "PG-13", "TV-14", "R", "TV-MA", "NC-17")))
+
+#NR = not rated
+#UR = unrated
+#TV-Y7-FV = a sub category of TV-Y7 
+
+netflix_titles <- netflix_titles |>
+    mutate(genre = str_extract(listed_in,"^[^,]+"))|>
+    mutate(genre2 = str_extract(listed_in,"(?<=, )[^,]+"))|>
+    mutate(genre3 = str_match(listed_in,"^[^,]+, [^,]+, ([^,]+)")[, 2])
+
+
+```
+
+```{r}
+# Create two separate data frames for movies only, because I want to analyse it separately
+netflix_movies <- netflix_titles |> 
+  filter(type == "Movie")|>
+  mutate(duration = as.integer(str_remove(duration," min$")))
+
+```
+
+```{r}
+#Create a dataframe for only netflix movies
+
+netflix_movies <- netflix_titles |> 
+  filter(type == "Movie")|>
+  mutate(duration = as.integer(str_remove(duration," min$")))
+
+#table(netflix_movies$genre)
+
+#Group a few genres together that are more niche
+netflix_movies <- netflix_movies |>
+    mutate(genre_summary=fct_collapse(genre,
+    "Horror & Thriller"= c("Horror Movies", "Thrillers"),
+    Comedy= c("Stand-Up Comedy", "Comedies"),
+    Other= c("LGBTQ Movies","Sports Movies","Music & Musicals","Romantic Movies","Independent Movies","Cult Movies"),
+    "NA" = "Movies")) |>
+        filter(genre_summary != "NA")
+
+#Relevel factor by count
+
+netflix_titles <- netflix_titles |>
+  mutate(rating = fct_relevel(rating, c("NR", "UR", "TV-Y", "TV-Y7", "TV-Y7-FV", "G", "TV-G", "PG", "TV-PG", "PG-13", "TV-14", "R", "TV-MA", "NC-17")))
+
+#table(netflix_movies$genre_summary)
+
+#Create bar chart showing what movie genres are common
+netflix_movies|>
+    mutate(genre_summary = fct_infreq(genre_summary))|>
+    ggplot(aes(x = genre_summary)) +
+    geom_bar() +
+    labs(
+        x = "Movie Genre",
+        y = "Count",
+        title = "Netflix Movie Genres",
+        subtitle = "Movies added on Netflix since 2019"
+        ) +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r}
+
+#Create bar chart showing what maturity ratings are common
+netflix_movies|>
+    ggplot(aes(x = rating)) +
+    geom_bar() +
+    labs(
+        x = "Movie Maturity Rating",
+        y = "Count",
+        title = "Netflix Movie Maturity Ratings",
+        subtitle = "Movies added on Netflix since 2019"
+        ) +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The bar chart above displays the matury ratings of movies on Netflix (specifically movies added onto Netflix from 2019 onwards) from 
+NR is "Not Rated" and UR is "Unrated," but other than those two ratings (refer to [github source](https://github.com/rfordatascience/tidytuesday/blob/main/data/2021/2021-04-20/readme.md)) for more information on each maturity rating 
+
+```{r}
+#Create heatmap showing what maturity ratings are common for what genre
+
+netflix_movies |>
+  count(genre_summary, rating) |>
+  ggplot(aes(x = rating, y = genre_summary, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), color = "white", size = 3) +
+    labs(
+        x = "Movie Maturity Rating",
+        y = "Movie Genre",
+        title = "Netflix Movie Maturity Ratings for each Genre",
+        subtitle = "Movies added on Netflix since 2019"
+        ) +
+  scale_fill_viridis_c() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Distribution of movie running times
+
+
+#use date variable
+#extract year
+#change running time to numeric
+```

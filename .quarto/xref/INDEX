@@ -19,5 +19,9 @@
   },
   "data_viz/Tidy Analysis.qmd": {
     "Tidy Analysis.html": "1089baa5"
+  },
+  "data_viz/Netflix.qmd": {
+    "Netflix.tex": "b587f194",
+    "Netflix.html": "7c418914"
   }
 }

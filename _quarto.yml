@@ -16,6 +16,8 @@ website:
            href: data_viz/Tidy Analysis.qmd
          - text: Ecotourism
            href: data_viz/Tidy Analysis 2.qmd
+         - text: Netflix
+           href: data_viz/Netflix.qmd
 
 format:
   html:
