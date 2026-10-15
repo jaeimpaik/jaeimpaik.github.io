@@ -13,14 +13,7 @@ execute:
   message: false
 ---
 
-at least 3 str_*() functions (3 different str_*() functions) done
-at least 1 fct_*() function done
-- change rating from str to fct
-at least 3 regular expressions done
-at least 1 lookaround done
-at least 2 illustrative, well-labeled plots or tables
-a description of what insights can be gained from your plots and tables
-a reference / documentation of the data source (same idea as in Project 1).
+A practice project to understand and experiment str() and fct() functions in R
 
 
 ```{r}
@@ -28,14 +21,13 @@ library(tidyverse)
 library(openintro)
 ```
 
-Read Netflix data into Positron.
 
 This Netflix data is from the Tidy Tuesday on 2021-04-20, obtained from Kaggle with credit to Shivam Bansal. The dataset was collected from Flixable, a third-party Netflix search engine. Data includes TV shows and movies added onto Netflix from 2019 onwards (although actual movie release year dates back to 1925), inclduing information such as show title, director, cast, country, release year, and rating.
 
 Credits for data source:
 [Github Link](https://github.com/rfordatascience/tidytuesday/blob/main/data/2021/2021-04-20/readme.md)
 
-
+Checking the first few rows of the Netflix data set below:
 ```{r}
 # Read in data from Tidy Tuesday
 netflix_titles <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-04-20/netflix_titles.csv')
@@ -104,7 +96,9 @@ netflix_titles <- netflix_titles |>
   mutate(rating = fct_relevel(rating, c("NR", "UR", "TV-Y", "TV-Y7", "TV-Y7-FV", "G", "TV-G", "PG", "TV-PG", "PG-13", "TV-14", "R", "TV-MA", "NC-17")))
 
 #table(netflix_movies$genre_summary)
+```
 
+```{r}
 #Create bar chart showing what movie genres are common
 netflix_movies|>
     mutate(genre_summary = fct_infreq(genre_summary))|>
@@ -157,8 +151,25 @@ netflix_movies |>
 ```
 
 ```{r}
-# Distribution of movie running times
+# Tidy release year variable
+netflix_movies <- netflix_movies |>
+  mutate(release_year = as.integer(release_year))|>
+  mutate(year_group = )
 
+```
+
+```{r}
+# Distribution of movie running times given release year
+
+netflix_movies|>
+    ggplot(aes(y = duration)) +
+    geom_boxplot() +
+    labs(
+        y = "Movie running time",
+        title = "Netflix Movie Running Times",
+        subtitle = "Movies added on Netflix since 2019"
+        ) +
+          facet_wrap(~genre_summary)
 
 #use date variable
 #extract year
