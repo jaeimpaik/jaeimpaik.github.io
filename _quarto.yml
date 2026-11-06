@@ -18,6 +18,8 @@ website:
            href: data_viz/Tidy Analysis 2.qmd
          - text: Netflix
            href: data_viz/Netflix.qmd
+         - text: Simulation Study
+           href: data_viz/Simulation Study.qmd
 
 format:
   html:

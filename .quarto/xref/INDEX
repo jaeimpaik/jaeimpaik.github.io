@@ -23,5 +23,8 @@
   "data_viz/Netflix.qmd": {
     "Netflix.tex": "b587f194",
     "Netflix.html": "7c418914"
+  },
+  "data_viz/Simulation Study.qmd": {
+    "Simulation Study.html": "5da5ae24"
   }
 }
