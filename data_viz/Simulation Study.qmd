@@ -127,12 +127,13 @@ With the function to play one Blackjack round now made above, we should now writ
 
 1. The player starts with \$1000 in the bankroll. If they win we + \$bet to the bankroll, if they lose we -\$ bet to the bankroll, and if they push (tie) the bankroll does not change.
 
-2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 1000 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.
+2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 100 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.
 
 ```{r}
-#Function that plays 1000 times at a FIXED player threshold
+#Function that plays 100 games at a FIXED player threshold
+set.seed(47)
 
-play_full_game <- function(player_threshold, dealer_threshold = 17, bankroll = 1000, bet = 10, rounds = 1000) {
+play_full_game <- function(player_threshold, dealer_threshold = 17, bankroll = 1000, bet = 10, rounds = 100) {
   #play 1000 rounds with FIXED player threshold
 
   for (i in seq_len(rounds)) {
@@ -151,12 +152,53 @@ play_full_game <- function(player_threshold, dealer_threshold = 17, bankroll = 1
 ```
 
 ### Mapping to see which player strategy is better
-Now, using map_dbl(), we will make the play_full_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the play_full_game() function through each player threshold will allow us to compare across player type.
+Now, since playing Blackjack 100 times and calculating the final bankrolll only give us one final bankroll number, to get a less noisy sample, we can repeat this full 100 play 100 more times.
+
+Then, using map_dbl(), we will make the replicate_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the replicate_game() function through each player threshold will allow us to compare across player type.
 
 ```{r}
+# Replicate the 100 games another 100 times
+set.seed(47)
 
+replicate_game <- function(player_threshold, num_reps = 100){
+  finals <- replicate(num_reps, play_full_game(player_threshold))
+  
+  tibble(
+  threshold = player_threshold,
+  mean_final = mean(finals)
+)
+}
+
+# Mapping the play_full_game() function over the different player thresholds
+
+final_results <- map(.x = c(12:20), .f = replicate_game) |>
+  list_rbind()
 ```
 
 ### Visualizing the simulation
 
-We stated earlier that a player strategy with a lower player threshold (~ below 15) is a safer
+Now, we can take the dataframe of final_results and plot it on a boxplot to see the distribution of final bankrolls across different player thresholds.
+
+```{r}
+# Line plot of final_results
+final_results|>
+  ggplot(aes(x = threshold, y = mean_final)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = 12:20) +
+  geom_hline(yintercept = 1000, linetype = "dashed") +
+  labs(
+    x = "Player threshold",
+    y = "Mean final bankroll ($)",
+    title = "Mean final bankroll by player threshold",
+    subtitle = "Dealer threshold 17, $10 bet, 100 hands per game"
+)
+```
+
+We stated earlier that a player strategy with a lower player threshold (~ below 17) is a safer player and a player strategy with a higher player threshold (~ above 17) is a more riskier player.
+
+The dotted line at $1000 is the starting bankroll for players. It is seen that regardless of player threshold, all players lose after playing a lot of rounds of Blackjack, which makes sense becuase of the house edge, which is the idea that the dealer has a slightly better chance of winning if a player uses a basic strategy (which is what our model does). This house edge would show more clearly when there is a much higher number of rounds.
+
+It can be seen from the lineplot that up to around a player threshold of 16, the meal final bankroll ranges between 900-950, with minimal variation, but the final bankroll drops significantly after a player threshold of 17. This is probably because the riskier player is more likely to bust (go over 21) and simply lose the game, whereas the safer players will at least have a chance at beating the dealer by not busting in the first place.
+
+Although this is not exactly the same as a game of real Blackjack (especially given that the Ace is treated as 1, not both 1 and 11) and the player strategy is basic, it can still be seen that safer or moderately safer players will make more than riskier players in the long run.

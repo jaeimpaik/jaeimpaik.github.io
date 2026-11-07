@@ -334,39 +334,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>With the function to play one Blackjack round now made above, we should now write a function that plays N hands with a bankroll and returns the final money earned/ lost. The player can keep betting at a negative balance, meaning they can end with a loss of money food.</p>
 <ol type="1">
 <li><p>The player starts with $1000 in the bankroll. If they win we + $bet to the bankroll, if they lose we -$ bet to the bankroll, and if they push (tie) the bankroll does not change.</p></li>
-<li><p>The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 1000 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.</p></li>
+<li><p>The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 100 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.</p></li>
 </ol>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays 1000 times at a FIXED player threshold</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>play_full_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>, <span class="at">bankroll =</span> <span class="dv">1000</span>, <span class="at">bet =</span> <span class="dv">10</span>, <span class="at">rounds =</span> <span class="dv">1000</span>) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#play 1000 rounds with FIXED player threshold</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(rounds)) {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">play_round</span>(player_threshold, dealer_threshold)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determine what the round result was, and +, -, or don't change bankroll</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  change <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"win"</span>  <span class="sc">~</span> bet,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"lose"</span> <span class="sc">~</span> <span class="sc">-</span>bet,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"tie"</span>  <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  bankroll <span class="ot">&lt;-</span> bankroll <span class="sc">+</span> change</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bankroll)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays 100 games at a FIXED player threshold</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">47</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>play_full_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>, <span class="at">bankroll =</span> <span class="dv">1000</span>, <span class="at">bet =</span> <span class="dv">10</span>, <span class="at">rounds =</span> <span class="dv">100</span>) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#play 1000 rounds with FIXED player threshold</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(rounds)) {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">play_round</span>(player_threshold, dealer_threshold)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determine what the round result was, and +, -, or don't change bankroll</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  change <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"win"</span>  <span class="sc">~</span> bet,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"lose"</span> <span class="sc">~</span> <span class="sc">-</span>bet,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"tie"</span>  <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  bankroll <span class="ot">&lt;-</span> bankroll <span class="sc">+</span> change</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bankroll)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="mapping-to-see-which-player-strategy-is-better" class="level3">
 <h3 class="anchored" data-anchor-id="mapping-to-see-which-player-strategy-is-better">Mapping to see which player strategy is better</h3>
-<p>Now, using map_dbl(), we will make the play_full_game() cycle through different player thresholds (i.e.&nbsp;trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the play_full_game() function through each player threshold will allow us to compare across player type.</p>
+<p>Now, since playing Blackjack 100 times and calculating the final bankrolll only give us one final bankroll number, to get a less noisy sample, we can repeat this full 100 play 100 more times.</p>
+<p>Then, using map_dbl(), we will make the replicate_game() cycle through different player thresholds (i.e.&nbsp;trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the replicate_game() function through each player threshold will allow us to compare across player type.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replicate the 100 games another 100 times</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">47</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>replicate_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">num_reps =</span> <span class="dv">100</span>){</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  finals <span class="ot">&lt;-</span> <span class="fu">replicate</span>(num_reps, <span class="fu">play_full_game</span>(player_threshold))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold =</span> player_threshold,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_final =</span> <span class="fu">mean</span>(finals)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapping the play_full_game() function over the different player thresholds</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>final_results <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="at">.x =</span> <span class="fu">c</span>(<span class="dv">12</span><span class="sc">:</span><span class="dv">20</span>), <span class="at">.f =</span> replicate_game) <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 <section id="visualizing-the-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="visualizing-the-simulation">Visualizing the simulation</h3>
-<p>We stated earlier that a player strategy with a lower player threshold (~ below 15) is a safer</p>
+<p>Now, we can take the dataframe of final_results and plot it on a boxplot to see the distribution of final bankrolls across different player thresholds.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Line plot of final_results</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>final_results<span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> threshold, <span class="at">y =</span> mean_final)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">12</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1000</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Player threshold"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean final bankroll ($)"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mean final bankroll by player threshold"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dealer threshold 17, $10 bet, 100 hands per game"</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Simulation-Study_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We stated earlier that a player strategy with a lower player threshold (~ below 17) is a safer player and a player strategy with a higher player threshold (~ above 17) is a more riskier player.</p>
+<p>The dotted line at $1000 is the starting bankroll for players. It is seen that regardless of player threshold, all players lose after playing a lot of rounds of Blackjack, which makes sense becuase of the house edge, which is the idea that the dealer has a slightly better chance of winning if a player uses a basic strategy (which is what our model does). This house edge would show more clearly when there is a much higher number of rounds.</p>
+<p>It can be seen from the lineplot that up to around a player threshold of 16, the meal final bankroll ranges between 900-950, with minimal variation, but the final bankroll drops significantly after a player threshold of 17. This is probably because the riskier player is more likely to bust (go over 21) and simply lose the game, whereas the safer players will at least have a chance at beating the dealer by not busting in the first place.</p>
+<p>Although this is not exactly the same as a game of real Blackjack (especially given that the Ace is treated as 1, not both 1 and 11) and the player strategy is basic, it can still be seen that safer or moderately safer players will make more than riskier players in the long run.</p>
 
 
 <!-- -->
@@ -826,166 +878,209 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Blackjack Simulation Study"</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "DS002 Project 3"</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Jamie Paik"</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">    source: true</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-overflow: wrap</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Blackjack simulation background</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>This simulation aims to replicate a simple game of Blackjack and see whether playing safer (with a lower player threshold) or more risky (with a higher player threshold), generates the most money after 100 rounds of play. Blackjack is a gambling game where the player plays against the dealer to get the sum of the cards to reach closest, but not over, 21. Each number card, except Ace, is worth the number on the card itself. Face cards are worth 10. An Ace is worth 1 or 11, depending on what is most ideal in a given hand.</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>Since the actual game of Blackjack is much more complicated (including the element of choice to hit or stay, doubling down, splitting, how much you bet... etc), we are going to simplify the rules of the game for the purposes of the simulation:</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>In a real Blackjack game, the dealer does not shuffle the deck after each play. For simplicity, the dealer for our simulation will draw *with replacement* from an infinite deck of cards, so that we do not have to consider changing number of cards.</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>While usually the Ace in the deck changes value depending on what is useful in the given hand, this simulation will always cound Ace as 1. The other number and face cards will have the normal Blackjack values.</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The player will be using the simplest player strategy of “hit until your total reaches minimum X or more, then stand.” ()</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>What will vary is the value of "X" for the player (= player threshold). The value of "X" will be variable between 12-20. Playing until 12 would be a much safer player strategy and playing until 20 would be a much more risky player strategy.</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Since the dealer deals as well, they will also have a value by which they will stop hitting (= dealer threshold). For simplicity, the dealer threshold will be fixed at 17 (i.e. dealer always stops hitting as soon as they get 17 or more)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>There could be three results after a single game of Blackjack.</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player could win either if neither the dealer or the player busts and the player's hand is greater than the dealer's, or if the dealer busts (i.e. hand sums to greater than 21).</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>Vice versa, the dealer could win either if the dealer's hand is greater than the player's, or if the player busts.</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player and dealer could tie if they get exactly the same hand.</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Usually players choose how much to bet on each game. For simplicity, each game will have a fixed bet of $10 per game.</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>For each game, you win +$10, lose -$10, or push (tie) and get $0 back.</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>Every player will start with $1000 bankroll</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player's bankroll after a hand is the old bankroll plus or minus the bet.</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>**The ultimate question we would like to answer with this simulation is:** After 1000 rounds of playing our simple version of Blackjack, which specific player threshold (between 12-20) avoids a loss and results in the most money?</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting the scene</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>In order to make the simulation, we would first have to create functions that perform the following actions:</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that deals one card with replacement (values 2-9, face cards as 10, ace as 1) from an infinite deck with the correct proportion of cards like a normal 52 card poker deck.</span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that computes a hand total, regardless of who's hand it is.</span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that plays one full hand and returns win, lose, or push.</span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Write a function that plays N hands with a bankroll and returns the final money.</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Map this function 100 times and vary the player threshold at a time. (For further studies, other variables can be varied such as dealer threshold, bet amount, starting bankroll... etc)</span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>We will make the first two functions first, which will later be used in more complicated functions.</span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="co">#Building a deck that has the right ratio of cards</span></span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>deck <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>)</span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that deals one card</span></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>deal <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(deck, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that computes hand total</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>hand_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(hand) {</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(hand)</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>We will now create a function that plays one full hand and returns win, lose, or push (tie) from the perspective of the player. Steps that the function will follow:</span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The player goes first. A player's hand will be assigned, starting with an empty hand. Depending on what the player threshold is (variable between 12-20), the player's hand will be drawn using the deal() function until the hand_sum() function calculates the hand to be more than or equal to the chosen player threshold for that game.</span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>If player's hand is over 21, return lose. (Do not even need to deal dealer's hand)</span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>If player's hand is NOT over 21, the dealer's hand will be assigned. Since the dealer has a fixed threshold of 17, the dealer's hand will be drawn using the deal() function until the hand_sum() function calculates the hand to be more than or equal to 17.</span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>If dealer's hand is over 21, return win. </span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Otherwise, compare two hand totals. The possible return cases are:</span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If player's hand &gt; dealer's hand, return win.</span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If dealer's hand &gt; player's hand, return lose. </span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If player's hand = dealer's hand, return tie</span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays one hand and returns result</span></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>play_round <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>) {</span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (player_threshold <span class="sc">&lt;</span> <span class="dv">12</span> <span class="sc">|</span> player_threshold <span class="sc">&gt;</span> <span class="dv">20</span>) {</span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"The player threshold must be between 12-20"</span>)</span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>  player_hand <span class="ot">&lt;-</span> <span class="fu">c</span>() <span class="co"># deal player hand</span></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">hand_sum</span>(player_hand) <span class="sc">&lt;</span> player_threshold) {</span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>  player_hand <span class="ot">&lt;-</span> <span class="fu">c</span>(player_hand,<span class="fu">deal</span>())</span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a><span class="co"># check if player bust</span></span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">hand_sum</span>(player_hand) <span class="sc">&gt;</span> <span class="dv">21</span>) { </span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"lose"</span>)</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>dealer_hand <span class="ot">&lt;-</span> <span class="fu">c</span>() <span class="co"># deal dealer hand</span></span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">hand_sum</span>(dealer_hand) <span class="sc">&lt;</span> dealer_threshold) {</span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>  dealer_hand <span class="ot">&lt;-</span> <span class="fu">c</span>(dealer_hand,<span class="fu">deal</span>())</span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="co"># check if dealer bust</span></span>
-<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">hand_sum</span>(dealer_hand) <span class="sc">&gt;</span> <span class="dv">21</span>) { </span>
-<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"win"</span>)</span>
-<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="co"># check final results</span></span>
-<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a><span class="fu">case_when</span>(</span>
-<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">&gt;</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"win"</span>,</span>
-<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">&lt;</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"lose"</span>,</span>
-<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">==</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"tie"</span>)</span>
-<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### Calculating the bet &amp; bankroll</span></span>
-<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>With the function to play one Blackjack round now made above, we should now write a function that plays N hands with a bankroll and returns the final money earned/ lost. The player can keep betting at a negative balance, meaning they can end with a loss of money food.</span>
-<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The player starts with \$1000 in the bankroll. If they win we + \$bet to the bankroll, if they lose we -\$ bet to the bankroll, and if they push (tie) the bankroll does not change.</span>
-<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 1000 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.</span>
-<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays 1000 times at a FIXED player threshold</span></span>
-<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>play_full_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>, <span class="at">bankroll =</span> <span class="dv">1000</span>, <span class="at">bet =</span> <span class="dv">10</span>, <span class="at">rounds =</span> <span class="dv">1000</span>) {</span>
-<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>  <span class="co">#play 1000 rounds with FIXED player threshold</span></span>
-<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(rounds)) {</span>
-<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">play_round</span>(player_threshold, dealer_threshold)</span>
-<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determine what the round result was, and +, -, or don't change bankroll</span></span>
-<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a>  change <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"win"</span>  <span class="sc">~</span> bet,</span>
-<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"lose"</span> <span class="sc">~</span> <span class="sc">-</span>bet,</span>
-<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"tie"</span>  <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>  bankroll <span class="ot">&lt;-</span> bankroll <span class="sc">+</span> change</span>
-<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bankroll)</span>
-<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### Mapping to see which player strategy is better</span></span>
-<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>Now, using map_dbl(), we will make the play_full_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the play_full_game() function through each player threshold will allow us to compare across player type.</span>
-<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualizing the simulation</span></span>
-<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a>We stated earlier that a player strategy with a lower player threshold (~ below 15) is a safer</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Blackjack Simulation Study"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "DS002 Project 3"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Jamie Paik"</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    source: true</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-overflow: wrap</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Blackjack simulation background</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>This simulation aims to replicate a simple game of Blackjack and see whether playing safer (with a lower player threshold) or more risky (with a higher player threshold), generates the most money after 100 rounds of play. Blackjack is a gambling game where the player plays against the dealer to get the sum of the cards to reach closest, but not over, 21. Each number card, except Ace, is worth the number on the card itself. Face cards are worth 10. An Ace is worth 1 or 11, depending on what is most ideal in a given hand.</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>Since the actual game of Blackjack is much more complicated (including the element of choice to hit or stay, doubling down, splitting, how much you bet... etc), we are going to simplify the rules of the game for the purposes of the simulation:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>In a real Blackjack game, the dealer does not shuffle the deck after each play. For simplicity, the dealer for our simulation will draw *with replacement* from an infinite deck of cards, so that we do not have to consider changing number of cards.</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>While usually the Ace in the deck changes value depending on what is useful in the given hand, this simulation will always cound Ace as 1. The other number and face cards will have the normal Blackjack values.</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The player will be using the simplest player strategy of “hit until your total reaches minimum X or more, then stand.” ()</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>What will vary is the value of "X" for the player (= player threshold). The value of "X" will be variable between 12-20. Playing until 12 would be a much safer player strategy and playing until 20 would be a much more risky player strategy.</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Since the dealer deals as well, they will also have a value by which they will stop hitting (= dealer threshold). For simplicity, the dealer threshold will be fixed at 17 (i.e. dealer always stops hitting as soon as they get 17 or more)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>There could be three results after a single game of Blackjack.</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player could win either if neither the dealer or the player busts and the player's hand is greater than the dealer's, or if the dealer busts (i.e. hand sums to greater than 21).</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>Vice versa, the dealer could win either if the dealer's hand is greater than the player's, or if the player busts.</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player and dealer could tie if they get exactly the same hand.</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Usually players choose how much to bet on each game. For simplicity, each game will have a fixed bet of $10 per game.</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>For each game, you win +$10, lose -$10, or push (tie) and get $0 back.</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>Every player will start with $1000 bankroll</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="ss">  * </span>The player's bankroll after a hand is the old bankroll plus or minus the bet.</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>**The ultimate question we would like to answer with this simulation is:** After 1000 rounds of playing our simple version of Blackjack, which specific player threshold (between 12-20) avoids a loss and results in the most money?</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting the scene</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>In order to make the simulation, we would first have to create functions that perform the following actions:</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that deals one card with replacement (values 2-9, face cards as 10, ace as 1) from an infinite deck with the correct proportion of cards like a normal 52 card poker deck.</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that computes a hand total, regardless of who's hand it is.</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A function that plays one full hand and returns win, lose, or push.</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Write a function that plays N hands with a bankroll and returns the final money.</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Map this function 100 times and vary the player threshold at a time. (For further studies, other variables can be varied such as dealer threshold, bet amount, starting bankroll... etc)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>We will make the first two functions first, which will later be used in more complicated functions.</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#Building a deck that has the right ratio of cards</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>deck <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>)</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that deals one card</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>deal <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(deck, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that computes hand total</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>hand_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(hand) {</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(hand)</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>We will now create a function that plays one full hand and returns win, lose, or push (tie) from the perspective of the player. Steps that the function will follow:</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The player goes first. A player's hand will be assigned, starting with an empty hand. Depending on what the player threshold is (variable between 12-20), the player's hand will be drawn using the deal() function until the hand_sum() function calculates the hand to be more than or equal to the chosen player threshold for that game.</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>If player's hand is over 21, return lose. (Do not even need to deal dealer's hand)</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>If player's hand is NOT over 21, the dealer's hand will be assigned. Since the dealer has a fixed threshold of 17, the dealer's hand will be drawn using the deal() function until the hand_sum() function calculates the hand to be more than or equal to 17.</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>If dealer's hand is over 21, return win. </span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Otherwise, compare two hand totals. The possible return cases are:</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If player's hand &gt; dealer's hand, return win.</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If dealer's hand &gt; player's hand, return lose. </span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>If player's hand = dealer's hand, return tie</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays one hand and returns result</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>play_round <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>) {</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (player_threshold <span class="sc">&lt;</span> <span class="dv">12</span> <span class="sc">|</span> player_threshold <span class="sc">&gt;</span> <span class="dv">20</span>) {</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"The player threshold must be between 12-20"</span>)</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>  player_hand <span class="ot">&lt;-</span> <span class="fu">c</span>() <span class="co"># deal player hand</span></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">hand_sum</span>(player_hand) <span class="sc">&lt;</span> player_threshold) {</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>  player_hand <span class="ot">&lt;-</span> <span class="fu">c</span>(player_hand,<span class="fu">deal</span>())</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="co"># check if player bust</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">hand_sum</span>(player_hand) <span class="sc">&gt;</span> <span class="dv">21</span>) { </span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"lose"</span>)</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>dealer_hand <span class="ot">&lt;-</span> <span class="fu">c</span>() <span class="co"># deal dealer hand</span></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">hand_sum</span>(dealer_hand) <span class="sc">&lt;</span> dealer_threshold) {</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>  dealer_hand <span class="ot">&lt;-</span> <span class="fu">c</span>(dealer_hand,<span class="fu">deal</span>())</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="co"># check if dealer bust</span></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">hand_sum</span>(dealer_hand) <span class="sc">&gt;</span> <span class="dv">21</span>) { </span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"win"</span>)</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a><span class="co"># check final results</span></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="fu">case_when</span>(</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">&gt;</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"win"</span>,</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">&lt;</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"lose"</span>,</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hand_sum</span>(player_hand) <span class="sc">==</span> <span class="fu">hand_sum</span>(dealer_hand) <span class="sc">~</span> <span class="st">"tie"</span>)</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### Calculating the bet &amp; bankroll</span></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>With the function to play one Blackjack round now made above, we should now write a function that plays N hands with a bankroll and returns the final money earned/ lost. The player can keep betting at a negative balance, meaning they can end with a loss of money food.</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The player starts with \$1000 in the bankroll. If they win we + \$bet to the bankroll, if they lose we -\$ bet to the bankroll, and if they push (tie) the bankroll does not change.</span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 100 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.</span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="co">#Function that plays 100 games at a FIXED player threshold</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">47</span>)</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>play_full_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">dealer_threshold =</span> <span class="dv">17</span>, <span class="at">bankroll =</span> <span class="dv">1000</span>, <span class="at">bet =</span> <span class="dv">10</span>, <span class="at">rounds =</span> <span class="dv">100</span>) {</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>  <span class="co">#play 1000 rounds with FIXED player threshold</span></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(rounds)) {</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">play_round</span>(player_threshold, dealer_threshold)</span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determine what the round result was, and +, -, or don't change bankroll</span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>  change <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"win"</span>  <span class="sc">~</span> bet,</span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"lose"</span> <span class="sc">~</span> <span class="sc">-</span>bet,</span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>    result <span class="sc">==</span> <span class="st">"tie"</span>  <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>  bankroll <span class="ot">&lt;-</span> bankroll <span class="sc">+</span> change</span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bankroll)</span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a><span class="fu">### Mapping to see which player strategy is better</span></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>Now, since playing Blackjack 100 times and calculating the final bankrolll only give us one final bankroll number, to get a less noisy sample, we can repeat this full 100 play 100 more times.</span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>Then, using map_dbl(), we will make the replicate_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the replicate_game() function through each player threshold will allow us to compare across player type.</span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a><span class="co"># Replicate the 100 games another 100 times</span></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">47</span>)</span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>replicate_game <span class="ot">&lt;-</span> <span class="cf">function</span>(player_threshold, <span class="at">num_reps =</span> <span class="dv">100</span>){</span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>  finals <span class="ot">&lt;-</span> <span class="fu">replicate</span>(num_reps, <span class="fu">play_full_game</span>(player_threshold))</span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold =</span> player_threshold,</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_final =</span> <span class="fu">mean</span>(finals)</span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapping the play_full_game() function over the different player thresholds</span></span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>final_results <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="at">.x =</span> <span class="fu">c</span>(<span class="dv">12</span><span class="sc">:</span><span class="dv">20</span>), <span class="at">.f =</span> replicate_game) <span class="sc">|&gt;</span></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>()</span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualizing the simulation</span></span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>Now, we can take the dataframe of final_results and plot it on a boxplot to see the distribution of final bankrolls across different player thresholds.</span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a><span class="co"># Line plot of final_results</span></span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a>final_results<span class="sc">|&gt;</span></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> threshold, <span class="at">y =</span> mean_final)) <span class="sc">+</span></span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">12</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1000</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Player threshold"</span>,</span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean final bankroll ($)"</span>,</span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mean final bankroll by player threshold"</span>,</span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dealer threshold 17, $10 bet, 100 hands per game"</span></span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>We stated earlier that a player strategy with a lower player threshold (~ below 17) is a safer player and a player strategy with a higher player threshold (~ above 17) is a more riskier player.</span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a>The dotted line at $1000 is the starting bankroll for players. It is seen that regardless of player threshold, all players lose after playing a lot of rounds of Blackjack, which makes sense becuase of the house edge, which is the idea that the dealer has a slightly better chance of winning if a player uses a basic strategy (which is what our model does). This house edge would show more clearly when there is a much higher number of rounds.</span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>It can be seen from the lineplot that up to around a player threshold of 16, the meal final bankroll ranges between 900-950, with minimal variation, but the final bankroll drops significantly after a player threshold of 17. This is probably because the riskier player is more likely to bust (go over 21) and simply lose the game, whereas the safer players will at least have a chance at beating the dealer by not busting in the first place.</span>
+<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a>Although this is not exactly the same as a game of real Blackjack (especially given that the Ace is treated as 1, not both 1 and 11) and the player strategy is basic, it can still be seen that safer or moderately safer players will make more than riskier players in the long run.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
