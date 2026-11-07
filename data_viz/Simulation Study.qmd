@@ -201,4 +201,4 @@ The dotted line at $1000 is the starting bankroll for players. It is seen that r
 
 It can be seen from the lineplot that up to around a player threshold of 16, the meal final bankroll ranges between 900-950, with minimal variation, but the final bankroll drops significantly after a player threshold of 17. This is probably because the riskier player is more likely to bust (go over 21) and simply lose the game, whereas the safer players will at least have a chance at beating the dealer by not busting in the first place.
 
-Although this is not exactly the same as a game of real Blackjack (especially given that the Ace is treated as 1, not both 1 and 11) and the player strategy is basic, it can still be seen that safer or moderately safer players will make more than riskier players in the long run.
+Although this is not exactly the same as a game of real Blackjack (especially given that the Ace is treated as 1, not both 1 and 11) and the player strategy is basic, it can still be seen that safer or moderately safer players will make more than riskier players in the long run. 
