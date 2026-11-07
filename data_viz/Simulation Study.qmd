@@ -97,8 +97,6 @@ play_round <- function(player_threshold, dealer_threshold = 17) {
   player_hand <- c(player_hand,deal())
 }
 
-#print(hand_sum(player_hand))
-
 # check if player bust
 if (hand_sum(player_hand) > 21) { 
   return("lose")
@@ -108,7 +106,6 @@ dealer_hand <- c() # deal dealer hand
   while (hand_sum(dealer_hand) < dealer_threshold) {
   dealer_hand <- c(dealer_hand,deal())
 }
-#print(hand_sum(dealer_hand))
 
 # check if dealer bust
 if (hand_sum(dealer_hand) > 21) { 
@@ -130,15 +127,35 @@ With the function to play one Blackjack round now made above, we should now writ
 
 1. The player starts with \$1000 in the bankroll. If they win we + \$bet to the bankroll, if they lose we -\$ bet to the bankroll, and if they push (tie) the bankroll does not change.
 
-2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of hands (default 1000 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.
-
-3. Using map_dbl(), we will make the play_full_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the play_full_game() function through each player threshold will allow us to compare across player type.
+2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 1000 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.
 
 ```{r}
 #Function that plays 1000 times at a FIXED player threshold
 
+play_full_game <- function(player_threshold, dealer_threshold = 17, bankroll = 1000, bet = 10, rounds = 1000) {
+  #play 1000 rounds with FIXED player threshold
+
+  for (i in seq_len(rounds)) {
+  result <- play_round(player_threshold, dealer_threshold)
+
+  #determine what the round result was, and +, -, or don't change bankroll
+  change <- case_when(
+    result == "win"  ~ bet,
+    result == "lose" ~ -bet,
+    result == "tie"  ~ 0
+    )
+  bankroll <- bankroll + change
+  }
+  return(bankroll)
+  }
 ```
 
+### Mapping to see which player strategy is better
+Now, using map_dbl(), we will make the play_full_game() cycle through different player thresholds (i.e. trying player thresholds between 12-20), and see how much money each player threshold choice results in. Since our ultimate question is to understand what type of player (safer or more riskier player) earns more in the long run, mapping the play_full_game() function through each player threshold will allow us to compare across player type.
+
+```{r}
+
+```
 
 ### Visualizing the simulation
 
