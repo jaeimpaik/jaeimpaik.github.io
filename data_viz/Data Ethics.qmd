@@ -1,0 +1,36 @@
+---
+title: "Data Ethics"
+subtitle: "DS002 Project 4"
+author: "Jamie Paik"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    source: true
+    code-overflow: wrap
+execute: 
+  warning: false
+  message: false
+---
+
+
+
+First, find an ethical dilemma with a data science component. Please take on only one ethical dilemma, it is too difficult to compare multiple dilemmsas in one short blog entry. There are many examples below, and within each example you should start with the reference provided (or the one that you found) and then find at least one more article (possibly from another angle? or go find the privacy policy / user agreement if there is one!) to expand your understanding of the topic. It should be clear from your report what information came from which article. Feel free to choose an example different from those below.
+
+Describe the example / scenario as if to someone who is not at all familiar with the setting. In particular, it should be clear both what is the data science component and what is the ethical dilemma.
+
+In 2024, a [WEIRD](https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/) article releaed internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed "SoundThinking") around Milwaukee, Wisconsin. The ShotSpotter is a audio detection device that can be mounted around the city
+
+Yet from another angle 
+
+
+
+Respond to at least 4 of the items below (from the list of questions or from the Data Values and Principles manifesto). Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example. Note: totally fine if there are items that were done well in your example.
+
+Given what you described in #3 (above), summarize by explaining why it matters. Who benefits? Who is neglected or harmed? Were the ethical violations in the interest of profit? Surveillance? Power?
+
+
+
+
+Credits for sources:
+[Link](https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/)

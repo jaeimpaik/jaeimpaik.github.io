@@ -127,7 +127,7 @@ With the function to play one Blackjack round now made above, we should now writ
 
 1. The player starts with \$1000 in the bankroll. If they win we + \$bet to the bankroll, if they lose we -\$ bet to the bankroll, and if they push (tie) the bankroll does not change.
 
-2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 100 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 1000 times at a FIXED player threshold and calculate the final bankroll at the end.
+2. The play_full_game() function will take in the inputs: bankroll (default $1000), bet (default $10), number of rounds (default 100 times), player threshold (a single number between 12-20), and dealer threshold (default 17). It will run the play_round() function 100 times at a FIXED player threshold and calculate the final bankroll at the end.
 
 ```{r}
 #Function that plays 100 games at a FIXED player threshold
