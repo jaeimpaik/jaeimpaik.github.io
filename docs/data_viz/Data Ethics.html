@@ -177,11 +177,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#soundspotter-technology-controversy" id="toc-soundspotter-technology-controversy" class="nav-link active" data-scroll-target="#soundspotter-technology-controversy">SoundSpotter technology controversy</a></li>
+  <li><a href="#data-science-ethics-considerations" id="toc-data-science-ethics-considerations" class="nav-link" data-scroll-target="#data-science-ethics-considerations">Data science ethics considerations</a></li>
+  <li><a href="#why-it-matters" id="toc-why-it-matters" class="nav-link" data-scroll-target="#why-it-matters">Why it matters</a></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -191,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -209,17 +218,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>First, find an ethical dilemma with a data science component. Please take on only one ethical dilemma, it is too difficult to compare multiple dilemmsas in one short blog entry. There are many examples below, and within each example you should start with the reference provided (or the one that you found) and then find at least one more article (possibly from another angle? or go find the privacy policy / user agreement if there is one!) to expand your understanding of the topic. It should be clear from your report what information came from which article. Feel free to choose an example different from those below.</p>
-<p>Describe the example / scenario as if to someone who is not at all familiar with the setting. In particular, it should be clear both what is the data science component and what is the ethical dilemma.</p>
-<p>In 2024, a <a href="https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/">WEIRD</a> article releaed internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed “SoundThinking”) around Milwaukee, Wisconsin. The ShotSpotter is a audio detection device that can be mounted around the city</p>
-<p>Yet from another angle</p>
-<p>Respond to at least 4 of the items below (from the list of questions or from the Data Values and Principles manifesto). Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example. Note: totally fine if there are items that were done well in your example.</p>
+<section id="soundspotter-technology-controversy" class="level2">
+<h2 class="anchored" data-anchor-id="soundspotter-technology-controversy">SoundSpotter technology controversy</h2>
+<p>In 2024, a <a href="https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/">WEIRD</a> article released internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed “SoundThinking”) around Milwaukee, Wisconsin. The ShotSpotter is an audio detection device that can be mounted around the city. Its purpose is to detech gunshot sounds to report to police for investigation. Audio sensors detect loud and explosive sounds that could potentially be gunshots. The algorithm first tries to filter through other confounding sounds like fireworks or cars backfiring, after which the remaining sounds are flagged for a Shotspotter technitian to check once more. The technology was used in Milwaukee since 2010, spending $3.7 million taxpayer money on using and maintaining the technology and signing another $5.25 million contract to continue using the service until March 2026 (<a href="https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/">Holmes,2024</a>).</p>
+<p>There is no data published on whether or not the ShotSpotter technology improved safety conditions in neighborhoods in Milwaukee since its deployment in 2010. In April 2022, the police department claimed that there was no data available to answer whether the technology improved clearance rate for crimes of police reporting speed, while the homicide rates have fluctuated over time. (<a href="https://wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/">Holmes,2022</a>)</p>
+<p>There are multiple layers of data science ethics considerations to this issue, beginning with the choice of location at which the SoundSpotter technology will be mounted at. The company revealed that the criteria for deploying the audio detection devices were based on historic records of gun violence and homicides. The company claims that the “areas that are likely disproportionately impacted by gun violence” are where the devices will mostly be concerntatied in, yet comparisons between the leaked data and the American Community Survey revealed that almost the neighborhoods with at least one SoundSpotter sensor had nearly 70% of the population identifying as Black or Latine. The ethical issue stems further when conclusions about crime, homicides, and safety are drawn from the data gathered over time using the ShotSpotter technology. Might the already disproportionately implemented technology exacerbate the thought that the neighborhoods with high Black or Latine populations are unsafe, and potentially inaccurately draw conclusions between a certain race and crime rates? From another perspective, there is also a meta-level concern about the illegal leakage of the “high-level ShotSpotter sensor locations for several jurisdictions,” and what implications there might be if exact locations of the sensors are revealed (<a href="https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/">Holmes,2024</a>).</p>
+</section>
+<section id="data-science-ethics-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="data-science-ethics-considerations">Data science ethics considerations</h2>
+<p>Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example.</p>
+<p><strong>What was the data collection process? Were the observations collected ethically? Are there missing observations?</strong></p>
+<p>The question of where the ShotSpotter technology is deployed in the first place is a concern “If you can only deploy a tool on a limited basis, of course, you deploy it in the place where it could do the greatest good.”(<a href="https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/">Mehrotra &amp; Scott,2024</a>).</p>
+<p>issue of where the ShotSpotters are placed around the city, and the concentration of When data is collected, there are clearly missing observations in the regions where the devices are not deployed.</p>
+<p>Goes against the 7th and 9th principle in the <a href="https://datapractices.org/manifesto/">Data Values and Principles manifesto</a> to “Recognize and mitigate bias in ourselves and in the data we use” and “Consider carefully the ethical implications of choices we make when using data, and the impacts of our work on individuals and society.”</p>
+<p><strong>Were the data made publicly available? Why? How? On what platform?</strong></p>
+<p>Meta question about leaked data Privacy questions, questions about effectiveness</p>
+</section>
+<section id="why-it-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-matters">Why it matters</h2>
 <p>Given what you described in #3 (above), summarize by explaining why it matters. Who benefits? Who is neglected or harmed? Were the ethical violations in the interest of profit? Surveillance? Power?</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
 <p>Credits for sources: <a href="https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/">Link</a></p>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -688,27 +714,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## SoundSpotter technology controversy</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>First, find an ethical dilemma with a data science component. Please take on only one ethical dilemma, it is too difficult to compare multiple dilemmsas in one short blog entry. There are many examples below, and within each example you should start with the reference provided (or the one that you found) and then find at least one more article (possibly from another angle? or go find the privacy policy / user agreement if there is one!) to expand your understanding of the topic. It should be clear from your report what information came from which article. Feel free to choose an example different from those below.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Describe the example / scenario as if to someone who is not at all familiar with the setting. In particular, it should be clear both what is the data science component and what is the ethical dilemma.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>In 2024, a <span class="co">[</span><span class="ot">WEIRD</span><span class="co">](https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)</span> article releaed internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed "SoundThinking") around Milwaukee, Wisconsin. The ShotSpotter is a audio detection device that can be mounted around the city</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>In 2024, a <span class="co">[</span><span class="ot">WEIRD</span><span class="co">](https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)</span> article released internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed "SoundThinking") around Milwaukee, Wisconsin. The ShotSpotter is an audio detection device that can be mounted around the city. Its purpose is to detech gunshot sounds to report to police for investigation. Audio sensors detect loud and explosive sounds that could potentially be gunshots. The algorithm first tries to filter through other confounding sounds like fireworks or cars backfiring, after which the remaining sounds are flagged for a Shotspotter technitian to check once more. The technology was used in Milwaukee since 2010, spending $3.7 million taxpayer money on using and maintaining the technology and signing another $5.25 million contract to continue using the service until March 2026 (<span class="co">[</span><span class="ot">Holmes,2024</span><span class="co">]</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/ )).</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>There is no data published on whether or not the ShotSpotter technology improved safety conditions in neighborhoods in Milwaukee since its deployment in 2010. In April 2022, the police department claimed that there was no data available to answer whether the technology improved clearance rate for crimes of police reporting speed, while the homicide rates have fluctuated over time. (<span class="co">[</span><span class="ot">Holmes,2022</span><span class="co">](https://wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/)</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Yet from another angle </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>There are multiple layers of data science ethics considerations to this issue, beginning with the choice of location at which the SoundSpotter technology will be mounted at. The company revealed that the criteria for deploying the audio detection devices were based on historic records of gun violence and homicides. The company claims that the "areas that are likely disproportionately impacted by gun violence" are where the devices will mostly be concerntatied in, yet comparisons between the leaked data and the American Community Survey revealed that almost the neighborhoods with at least one SoundSpotter sensor had nearly 70% of the population identifying as Black or Latine. The ethical issue stems further when conclusions about crime, homicides, and safety are drawn from the data gathered over time using the ShotSpotter technology. Might the already disproportionately implemented technology exacerbate the thought that the neighborhoods with high Black or Latine populations are unsafe, and potentially inaccurately draw conclusions between a certain race and crime rates? From another perspective, there is also a meta-level concern about the illegal leakage of the "high-level ShotSpotter sensor locations for several jurisdictions,"  and what implications there might be if exact locations of the sensors are revealed (<span class="co">[</span><span class="ot">Holmes,2024</span><span class="co">]</span>(</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/ )).</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Respond to at least 4 of the items below (from the list of questions or from the Data Values and Principles manifesto). Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example. Note: totally fine if there are items that were done well in your example.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data science ethics considerations</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Given what you described in #3 (above), summarize by explaining why it matters. Who benefits? Who is neglected or harmed? Were the ethical violations in the interest of profit? Surveillance? Power?</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example.</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>**What was the data collection process? Were the observations collected ethically? Are there missing observations?**</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Credits for sources:</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>The question of where the ShotSpotter technology is deployed in the first place is a concern</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>"If you can only deploy a tool on a limited basis, of course, you deploy it in the place where it could do the greatest good."(<span class="co">[</span><span class="ot">Mehrotra &amp; Scott,2024</span><span class="co">]</span>(</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)). </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>issue of where the ShotSpotters are placed around the city, and the concentration of </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>When data is collected, there are clearly missing observations in the regions where the devices are not deployed.</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Goes against the 7th and 9th principle in the <span class="co">[</span><span class="ot">Data Values and Principles manifesto</span><span class="co">](https://datapractices.org/manifesto/)</span> to "Recognize and mitigate bias in ourselves and in the data we use" and "Consider carefully the ethical implications of choices we make when using data, and the impacts of our work on individuals and society."</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>**Were the data made publicly available? Why? How? On what platform?**</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>Meta question about leaked data </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>Privacy questions, questions about effectiveness</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why it matters</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>Given what you described in #3 (above), summarize by explaining why it matters. Who benefits? Who is neglected or harmed? Were the ethical violations in the interest of profit? Surveillance? Power?</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sources</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>Credits for sources:</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
