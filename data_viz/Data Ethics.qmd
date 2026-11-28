@@ -13,45 +13,59 @@ execute:
   message: false
 ---
 
-## SoundSpotter technology controversy
+## ShotSpotter technology controversy
 
-In 2024, a [WEIRD](https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/) article released internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed "SoundThinking") around Milwaukee, Wisconsin. The ShotSpotter is an audio detection device that can be mounted around the city. Its purpose is to detech gunshot sounds to report to police for investigation. Audio sensors detect loud and explosive sounds that could potentially be gunshots. The algorithm first tries to filter through other confounding sounds like fireworks or cars backfiring, after which the remaining sounds are flagged for a Shotspotter technitian to check once more. The technology was used in Milwaukee since 2010, spending $3.7 million taxpayer money on using and maintaining the technology and signing another $5.25 million contract to continue using the service until March 2026 ([Holmes,2024](
+In 2024, a [WIRED](https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/) article released internal documents that exposed the locations of a gunshot detection and surveillance tool called ShotSpotter (now renamed "SoundThinking") around Milwaukee, Wisconsin. The ShotSpotter is an audio detection device that can be mounted around the city. Its purpose is to detect gunshot sounds to report to police for investigation. Audio sensors detect loud and explosive sounds that could potentially be gunshots. The algorithm first tries to filter through other confounding sounds like fireworks or cars backfiring, after which the remaining sounds are flagged for a ShotSpotter technician to check once more. The technology was used in Milwaukee since 2010, spending $3.7 million taxpayer money on using and maintaining the technology and signing another $5.25 million contract to continue using the service until March 2026 ([Holmes,2024](
 https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/ )).
 
-There is no data published on whether or not the ShotSpotter technology improved safety conditions in neighborhoods in Milwaukee since its deployment in 2010. In April 2022, the police department claimed that there was no data available to answer whether the technology improved clearance rate for crimes of police reporting speed, while the homicide rates have fluctuated over time. ([Holmes,2022](https://wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/))
+There is no data published on whether or not the ShotSpotter technology improved safety conditions in neighborhoods in Milwaukee since its deployment in 2010. In April 2022, the police department claimed that there was no data available to answer whether the technology improved clearance rate for crimes of police reporting speed, while the homicide rates have fluctuated over time ([Holmes,2022](https://wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/)).
 
 
-There are multiple layers of data science ethics considerations to this issue, beginning with the choice of location at which the SoundSpotter technology will be mounted at. The company revealed that the criteria for deploying the audio detection devices were based on historic records of gun violence and homicides. The company claims that the "areas that are likely disproportionately impacted by gun violence" are where the devices will mostly be concerntatied in, yet comparisons between the leaked data and the American Community Survey revealed that almost the neighborhoods with at least one SoundSpotter sensor had nearly 70% of the population identifying as Black or Latine. The ethical issue stems further when conclusions about crime, homicides, and safety are drawn from the data gathered over time using the ShotSpotter technology. Might the already disproportionately implemented technology exacerbate the thought that the neighborhoods with high Black or Latine populations are unsafe, and potentially inaccurately draw conclusions between a certain race and crime rates? From another perspective, there is also a meta-level concern about the illegal leakage of the "high-level ShotSpotter sensor locations for several jurisdictions,"  and what implications there might be if exact locations of the sensors are revealed ([Holmes,2024](
+There are multiple layers of data science ethics considerations to this issue, beginning with the choice of location at which the ShotSpotter sensors are mounted at. The company revealed that the criteria for deploying the audio detection devices were based on historic records of gun violence and homicides. The company claims that the "areas that are likely disproportionately impacted by gun violence" are where the devices will mostly be concentrated in, yet comparisons between the leaked data and the American Community Survey revealed that almost all the neighborhoods with at least one ShotSpotter sensor had nearly 70% of the population identifying as Black or Latine ([Mehrotra & Scott,2024](
+https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)). The ethical issue stems further when conclusions about crime, homicides, and safety are drawn from the data gathered over time using the ShotSpotter technology. Might the already disproportionately implemented technology exacerbate the thought that the neighborhoods with high Black or Latine populations are unsafe, and potentially cause people to inaccurately draw conclusions between a certain race and crime rates? From another perspective, there is also a meta-level concern about the illegal leakage of the "high-level ShotSpotter sensor locations for several jurisdictions,"  and what implications there might be if exact locations of the sensors are revealed ([Holmes,2024](
 https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/ )).
 
 
 ## Data science ethics considerations
 
-Include four separate paragraphs that explain both the issue (e.g., consent) and how the issue played out in the data science example.
-
 **What was the data collection process? Were the observations collected ethically? Are there missing observations?**
 
-The question of where the ShotSpotter technology is deployed in the first place is a concern
-"If you can only deploy a tool on a limited basis, of course, you deploy it in the place where it could do the greatest good."([Mehrotra & Scott,2024](
-https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)). 
+There is new data constantly being collected by the implementation of the ShotSpotter sensors themselves, including aspects such as crime rates, homicide rates, police response rates... etc. Reports citing the [MPD’s crime map](https://city.milwaukee.gov/police/Information-Services/Crime-Maps-and-Statistics) claimed that neighborhoods with ShotSpotters had the highest number of homicides and non-fatal shootings, using it as evidence that the technology is well-intended and placed in areas that are more dangerous and should be surveilled. The problem with drawing conclusions from this data, however, comes from the biased placement of the sensors themselves. The leaked data about ShotSpotter sensor locations have revealed that majority of the sensors were placed in largely Black neighborhoods despite other, more diverse neighborhoods having more crime rates on average. Hence, when the data is collected by the sensors, there are clearly missing observations in the regions where the devices are not deployed at all. This flawed conclusion could "further [entrench] racially biased policing and surveillance" ([Gwidt,2024](
+https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/)).
 
-issue of where the ShotSpotters are placed around the city, and the concentration of 
-When data is collected, there are clearly missing observations in the regions where the devices are not deployed.
+This goes against the 7th and 9th principle in the [Data Values and Principles manifesto](https://datapractices.org/manifesto/) to "Recognize and mitigate bias in ourselves and in the data we use" and "Consider carefully the ethical implications of choices we make when using data, and the impacts of our work on individuals and society."
 
-Goes against the 7th and 9th principle in the [Data Values and Principles manifesto](https://datapractices.org/manifesto/) to "Recognize and mitigate bias in ourselves and in the data we use" and "Consider carefully the ethical implications of choices we make when using data, and the impacts of our work on individuals and society."
+**Who was measured? Are those individuals representative of the people to whom we’d like to generalize / apply the algorithm? Should we analyze data if we do not know how the data were collected?**
+
+Adding onto the concerns from the question above, there is a bias towards measuring criminal information about Black and Latine races when it comes to the ShotSpotter data that is collected because of the placement of sensors. Also, the average household income of the individuals living in the areas with high sensor concentration is around $50,000 per year. Because the sample of data is biased in itself in terms of race and socioeconomic status, we should be more cautious when drawing conclusions about crime rates or crime prevention, as well as factors that influence criminal behavior.
+
+**What was the consent structure for recruiting participants? Were the participants aware of the ways their data would be used for research? Was informed consent possible? Can you provide informed consent for applications that are yet foreseen?**
+
+While not directly related to data itself, the process by which private property owners were asked for consent when mounting the sensors on their land was reported online. It was claimed that most property owners allowed ShotSpotter technology to be installed free of charge, with some being compensated with a form of financial reimbursement or gift card ([Mehrotra & Scott,2024](
+https://www.wired.com/story/shotspotter-secret-sensor-locations-leak/)). However, it is unclear whether, or how, these property owners were properly debriefed on the types of data that may be collected by the device, how it might help (or conversely not help) the public, or what parts of the data may or may not be disclosed. It seems like the privacy of the land owners were respected by not revealing the exact locations in which the sensors were installed, but WIRED’s release of leaked data may have brought up that privacy concern. 
+
 
 **Were the data made publicly available? Why? How? On what platform?**
 
-Meta question about leaked data 
-Privacy questions, questions about effectiveness
+Following the question above, while general regions where the sensors were deployed were revealed, the ShotSpotter company has never disclosed the exact locations of each sensor. From one perspective, the public demands more disclosure of information surrounding the technology. One privacy advocate stated that “If we’re going to trade our privacy to law enforcement and to the state, the community should know that the privacy that they’re trading comes with some type of benefits... and the fact that most of these taxpayers don’t even know about the technologies being imposed on them, [are] extremely problematic" ([Holmes,2024](
+https://wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/ )).
+
+However, it is also understandable that ShotSpotter was very careful about protecting information surrounding exact locations of sensors because "...this would endanger private citizens who have agreed to have a ShotSpotter sensor located on their houses, or endanger the security and effectiveness of the sensors” ([Holmes,2022](https://wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/)). Hence, despite WIRED having access to the system of ShotSpotter sensors, they did not release details of exact locations to maintain citizen privacy.
 
 ## Why it matters
 
-
-Given what you described in #3 (above), summarize by explaining why it matters. Who benefits? Who is neglected or harmed? Were the ethical violations in the interest of profit? Surveillance? Power?
-
+Considering these ethical dilemmas when discussing how data is collected, shared, and used to draw conclusions is important in the case of the ShotSpotter controversy because incorrect or biased collection and use of data could inadvertently exacerbate existing stereotypes about certain races or socioeconomic classes, leading to stigma and real consequences towards more marginalized communities. While surveillance may seem like an important tool to lower crime rates and respond more quickly to potentially dangerous incidents, when conclusions about the effectiveness of the system or the crime rates of a region are drawn using data collected from a restricted population, people of a certain race could be overpoliced and constantly put under pressure for surveillance, while others in power and with more money could potentially live with a false sense of security as well. Also, privacy concerns when it comes to meta-level data about the location or concentration of surveillance sensors is important to consider, especially when it concerns private citizens and their safety.
 
 
 ## Sources
-Credits for sources:
-[Link](https://www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/)
+Gershkoff, Amy, et al. “Manifesto for Data Practices.” Datapractices.Org, datapractices.org/manifesto/. Accessed 28 Nov. 2026.
+
+Gwidt, David. “ShotSpotter Leak Shows That Surveillance Tech Is Used to Overpolice Black and Brown Communities - ACLU of Wisconsin.” ACLU of Wisconsin, 6 Mar. 2024, www.aclu-wi.org/news/shotspotter-leak-shows-surveillance-tech-used-overpolice-black-and-brown-communities/. Accessed 28 Nov. 2026.
+
+Holmes, Isiah. “Is ShotSpotter Gunshot Detection Tech Working for Milwaukee? • Wisconsin Examiner.” Wisconsin Examiner, 8 Dec. 2022, wisconsinexaminer.com/2022/12/08/is-shotspotter-gunshot-detection-tech-working-for-milwaukee/. Accessed 28 Nov. 2026.
+
+Holmes, Isiah. “Privacy Advocates Respond to Leaked Data of ShotSpotter Gunshot Detection • Wisconsin Examiner.” Wisconsin Examiner, 27 Feb. 2024, wisconsinexaminer.com/2024/02/27/privacy-advocates-respond-to-leaked-data-of-shotspotter-gunshot-detection/. Accessed 28 Nov. 2026.
+
+Mehrotra, Dhruv. “Here Are the Secret Locations of ShotSpotter Gunfire Sensors.” Wired, 22 Feb. 2024, www.wired.com/story/shotspotter-secret-sensor-locations-leak/. Accessed 28 Nov. 2026.
+
+Milwaukee Police Department. “Crime Maps & Statistics.” City.Milwaukee.Gov, city.milwaukee.gov/police/Information-Services/Crime-Maps-and-Statistics. Accessed 28 Nov. 2026.
