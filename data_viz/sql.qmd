@@ -1,0 +1,51 @@
+---
+title: "SQL"
+subtitle: "DS002 Project 5"
+author: "Jamie Paik"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    source: true
+    code-overflow: wrap
+execute: 
+  warning: false
+  message: false
+---
+
+
+```{r}
+library(tidyverse)
+library(openintro)
+library(RMariaDB)
+```
+
+Your task is to use at least 3 data tables to say something interesting about traffic stops (or pedestrian stops). It will take a little bit of sleuthing to figure out what you want to look at. In the end, you will present your findings in a figure or table. Some potential areas to explore include:
+
+Are there differences over time?
+Are there differences across datasets?
+Is there anything interesting about pedestrian stops versus vehicular stops? (I’m not sure how many of the datasets have much information on pedestrian stops).
+Your analysis should have the following elements:
+
+queries of at least three of the SQL tables
+at least 6 uses of SQL keywords other than SELECT, FROM, and LIMIT.
+at least 2 illustrative, well-labeled plots or tables
+a description of what insights can be gained from your plots and tables
+a reference / documentation of the data source (see below, make sure to include the citation!)1
+
+```{r}
+con_traffic <- DBI::dbConnect(
+
+  RMariaDB::MariaDB(),
+
+  dbname = "traffic",
+
+  host = Sys.getenv("TRAFFIC_HOST"),
+
+  user = Sys.getenv("TRAFFIC_USER"),
+
+  password = Sys.getenv("TRAFFIC_PWD")
+
+)
+```
+

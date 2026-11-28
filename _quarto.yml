@@ -22,6 +22,8 @@ website:
            href: data_viz/Simulation Study.qmd
          - text: Data Ethics
            href: data_viz/Data Ethics.qmd
+         - text: SQL Analysis
+           href: data_viz/sql.qmd
 
 format:
   html:
